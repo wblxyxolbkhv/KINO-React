@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import YouTube from 'react-native-youtube';
 import React, { Component } from 'react';
 import {
@@ -10,56 +5,87 @@ import {
   StyleSheet,
   Text,
   View,
-  ListView
+  ListView, 
+  Alert,
+  FlatList,
+  Image
 } from 'react-native';
 import FilmRow from './FilmRow';
 import Profile from './Profile';
 import Tabbar from 'react-native-tabbar-bottom';
-
+import Button from 'react-native-button';
+import {StackNavigator} from 'react-navigation';
 
 export default class App extends Component {
+
+  _onPress() {
+    
+   }
+
   constructor() 
   {
     super();
-	  const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {dataSource: ds.cloneWithRows(['row 1']), page: "HomeScreen"};
+    this.state = {isLoading: true};
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state={dataSource: ds.cloneWithRows(['row 1'])}
   }
+
+  componentWillMount() {
+    return fetch('http://192.168.43.107:4320/api/film')
+    .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          isLoading: false,
+          dataSourceAPI: responseJson,
+          page:"HomeScreen",
+        }, 
+        function(){
+          
+        });
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
+  getfilms(){
+    return this.state.dataSourceAPI.length;
+  }
+
   render() {
     return (
-      
       <View style={styles.container}>
-          {
-              this.state.page === "HomeScreen" && (
+          {this.state.page === "HomeScreen" && (
               <ListView
                 style={[styles.container, styles.primaryContainer]}
                 dataSource={this.state.dataSource}
                 renderRow={(data) => 
-                  <FilmRow 
-                    filmName='Властелин колец: Братство кольца' 
-                    imageSource='./img/Posters/LOTR1.jpg' 
-                    year='Год: 2002'
-                    duration='Продолжительность: 3 ч 48 мин'
-                    style={styles.filmRow}
-                  />
+                    <FilmRow 
+                      filmName = {this.state.dataSourceAPI[0].name}
+                      imageSource={this.state.dataSourceAPI[0].poster}
+                      year={'Год: ' + this.state.dataSourceAPI[0].releaseYear}
+                      duration={'Продолжительность: ' + this.state.dataSourceAPI[0].duration + ' минут'}
+                      genre={this.state.dataSourceAPI[0].genre}
+                      director={this.state.dataSourceAPI[0].director}
+                      country={this.state.dataSourceAPI[0].country}
+                      description={this.state.dataSourceAPI[0].description}
+                      ageLimit={this.state.dataSourceAPI[0].ageLimit}
+                      link={this.state.dataSourceAPI[0].link}
+                      style={styles.filmRow}
+                    /> 
                 }
-              />      
+              />   
             )    
           }
-          {this.state.page === "NotificationScreen" && 
-          <YouTube
-            apiKey="AIzaSyBnfKSaK1nHiY4MgTCUlTmPFKN0mZwEXJk"
-            videoId="KVZ-P-ZI6W4"   // The YouTube video ID
-            play={true}             // control playback of video with true/false
-            fullscreen={true}       // control whether the video should play in fullscreen or inline
-            loop={true}             // control whether the video should loop when ended
-  
-            onReady={e => this.setState({ isReady: true })}
-            onChangeState={e => this.setState({ status: e.state })}
-            onChangeQuality={e => this.setState({ quality: e.quality })}
-            onError={e => this.setState({ error: e.error })}
-  
-            style={{ alignSelf: 'stretch', height: 300 }}
-          />}
+          {this.state.page === "FilmsScreen" &&
+          <Button onPress={this._onPress} title="Hello" color="#FFFFFF">
+            <View>
+              <Text>
+                {this.state.dataSourceAPI[0].name}
+                {this.getfilms()}
+              </Text>
+            </View>
+          </Button>}
 
           {this.state.page === "ProfileScreen" && <Profile></Profile>}
   
@@ -70,13 +96,13 @@ export default class App extends Component {
               {
                 page: "HomeScreen",
                 icon: "home",
-                iconText: 'Афиша',
+                iconText: 'Подборка',
               },
               {
-                page: "NotificationScreen",
+                page: "FilmsScreen",
                 icon: "notifications",
                 badgeNumber: 11,
-                iconText: 'Уведомления',
+                iconText: 'Фильмы',
               },
               {
                 page: "ProfileScreen",
@@ -90,6 +116,7 @@ export default class App extends Component {
   }
 }
 
+
 var styles = {
   container: {
     flex: 1
@@ -98,7 +125,7 @@ var styles = {
 	  alignSelf: 'stretch',
   },
   primaryContainer: {
-	  marginTop: 24,
+	  
 	  marginBottom: 50,
   },
 

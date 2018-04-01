@@ -1,25 +1,29 @@
 import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image} from 'react-native';
+import Button from 'react-native-button';
 
 export default class FilmRow extends React.Component {
+	 
   render() {
     return (
-		<View style={styles.filmRow}>
-			<Image source={require('./img/Posters/LOTR1.jpg' )} style={styles.poster}/>
-			<View style={{alignSelf: 'stretch'}}>
-				<View style={{flexDirection:'row'}}>
-					<Text style={styles.filmName}>
-						{this.props.filmName}
-					</Text>
+			<Button onPress={this._onPress}>
+				<View style={styles.filmRow}>
+						<View style={{flexDirection:'row'}}>
+							<Image style={styles.poster} source={{uri:'http://192.168.0.103:4320/images/Posters/' + this.props.imageSource}}/>
+							<View style={{flexDirection:'column'}}>
+								<Text style={styles.filmName}>
+									{this.props.filmName}
+								</Text>
+								<Text style={styles.extraFilmInfo}>
+									{this.props.year}
+								</Text>
+								<Text style={styles.extraFilmInfo}>
+									{this.props.duration}
+								</Text>
+							</View>
+					</View>
 				</View>
-				<Text style={styles.extraFilmInfo}>
-					{this.props.year}
-				</Text>
-				<Text style={styles.extraFilmInfo}>
-					{this.props.duration}
-				</Text>
-			</View>
-		</View>
+		</Button>
     );
   }
 }
@@ -28,29 +32,25 @@ var styles = StyleSheet.create({
   filmName: {
 	  fontSize: 24,
 	  fontWeight: 'bold',
-	  color: 'white',
-	  alignSelf: 'stretch',
-	  flexWrap: 'wrap',
-	  flex: 1,
-  },
+	  color: 'white'
+	},
+	
   poster: {
 	  width: 100,
-	  height: 140,
-	  marginRight: 10
-  },
+	  height: 120,
+		marginRight: 15,
+	},
+	
   filmRow: {
 	  backgroundColor: '#161a23',
 	  maxHeight: 160,
-	  flex: 1,
-	  flexDirection: 'row',
 	  paddingBottom: 10,
 	  paddingTop: 10,
 	  paddingLeft: 10,
 	  paddingRight: 10,
-	  alignSelf: 'stretch',
   },
   extraFilmInfo: {
-	  color: '#ccc',
+		color: '#ccc'
   }
 });
 
