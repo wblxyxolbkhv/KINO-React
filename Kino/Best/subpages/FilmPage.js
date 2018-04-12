@@ -6,7 +6,7 @@ export default class Profile extends React.Component {
   constructor() 
   {
     super();
-    this.state={isLoading:true}
+    this.state={isLoading:true,error:false}
   }
 
   componentWillMount() {
@@ -22,7 +22,9 @@ export default class Profile extends React.Component {
         });
       })
       .catch((error) =>{
-        console.error(error);
+        this.setState({
+          error:true,
+        })
       });
   }
 
@@ -32,6 +34,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
+    if(!this.state.error){
     if(this.state.isLoading){
       return(
         <View style={{flex: 1, padding: 20}}>
@@ -45,23 +48,28 @@ export default class Profile extends React.Component {
           <View style={styles.postercontainer}>
             <Image style={styles.poster} source={{uri:'http://'+ global.ip + '/images/Posters/' + this.state.dataSourceAPI.poster}}/>
           </View>
-          <Text style={styles.text}>
-            Название: {this.state.dataSourceAPI.name}
+        </View>
+        <View style={{flex:1}}>
+          <Text style={styles.h1}>
+            {this.state.dataSourceAPI.name}
           </Text>
           <Text style={styles.text}>
-            Год:
+            Годвыпуска
           </Text>
           <Text style={styles.text}>
-            Режиссёр: {this.state.dataSourceAPI.directorLINK}
+            Длительность
           </Text>
           <Text style={styles.text}>
-            Жанр:
+            Страна
           </Text>
           <Text style={styles.text}>
-            Актёры: 
+            Жанр
           </Text>
           <Text style={styles.text}>
-            О фильме: {this.state.dataSourceAPI.description}
+            Режиссёр
+          </Text>
+          <Text style={styles.text}>
+            Возврастное ограничение
           </Text>
         </View>
         <View>
@@ -69,7 +77,11 @@ export default class Profile extends React.Component {
                 Список заказов
           </Text>
         </View>
-        	
+        <View style={{flex:1}}>
+          <Text style={styles.h2}>
+            О фильме
+          </Text>
+        </View>
         <View>
           <YouTube
             apiKey="AIzaSyBnfKSaK1nHiY4MgTCUlTmPFKN0mZwEXJk"
@@ -83,12 +95,19 @@ export default class Profile extends React.Component {
             onChangeState={e => this.setState({ status: e.state })}
             onChangeQuality={e => this.setState({ quality: e.quality })}
             onError={e => this.setState({ error: e.error })}
-  
-            style={{ alignSelf: 'stretch', height: 300 }}
+            style={{ alignSelf: 'stretch', height: 200 }}
           />
         </View>		
 		</ScrollView>
     );
+  }
+  else{
+  return(
+      <View style={{backgroundColor:'#0f0',flex:1,justifyContent:'center',alignItems: 'center',}}>
+          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
+      </View>
+  )
+}
   }
 }
 var styles = StyleSheet.create({
@@ -97,6 +116,9 @@ var styles = StyleSheet.create({
     width:330,
     height:400
   },
+  h1:{},
+  h2:{},
+  h3:{},
   container:{
     padding:20,
     backgroundColor:'#161a23',

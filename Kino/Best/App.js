@@ -8,16 +8,10 @@ import Films from './mainpages/Films';
 import TabView from './mainpages/TabView';
 import Button from 'react-native-button';
 import SessionPage from './subpages/SessionPage';
+import TabIcon from './components/TabIcon';
 
 import { Scene, Router, TabBar, Modal, Schema, Actions, Reducer, ActionConst, Tabs} from 'react-native-router-flux';
 
-class TabIcon extends React.Component {
-  render(){
-      return (
-          <Text style={{color: this.props.selected ? 'red' :'black'}}>{this.props.title}</Text>
-      );
-  }
-}
 
 const reducerCreate = params=>{
     const defaultReducer = Reducer(params);
@@ -33,23 +27,21 @@ export default class App extends React.Component {
       return(
       <Router createReducer={reducerCreate} sceneStyle={{backgroundColor:'#F7F7F7'}}>
           <Scene key="modal" component={Modal} >
-              <Scene key="root" hideNavBar={true}>
-                  <Scene key="tabbar" tabs={true} tabBarPosition='bottom' swipeEnabled={false}>
+              <Scene key="root" hideNavBar={true} navigationBarStyle={{backgroundColor: '#161a23'}} titleStyle={{color:'#fff'}} navBarButtonColor='#fff'>
+                  <Scene key="tabbar" lazy tabs={true} tabBarPosition='bottom' swipeEnabled={false} tabBarStyle={{backgroundColor: '#161a23'} } activeBackgroundColor='#363a43' activeTintColor='#fff'>
                       <Scene key="hot" component={MainPage} initial={true} title="Подборка" hideNavBar={true} />
-                      <Scene key="tab2" title="Фильмы" backToInitial={true}>
-                        <Scene key="films" component={Films} title="Фильмы" hideNavBar={true} lazy={true}/>
-                        <Scene key="filmpage" component={FilmPage} title="Some" lazy={true}/>
+                      <Scene key="tab2" title="Фильмы" backToInitial={true} tabBarLabel={null}>
+                        <Scene key="films" component={Films} title="Фильмы" hideNavBar={true}/>
+                        <Scene key="filmpage" component={FilmPage} onBack={Actions.films}/>
                       </Scene>
                       <Scene key="tab3" title="Сеансы" backToInitial={true}>
-                        <Scene key="sessions" component={Sessions} title="Сеансы" hideNavBar={true} lazy={true}/>
-                        <Scene key="sessionpage" component={SessionPage} title="Сеансы" lazy={true}/>
+                        <Scene key="sessions" component={Sessions} title="Сеансы" hideNavBar={true}/>
+                        <Scene key="sessionpage" component={SessionPage} title="Сеансы" rightTitle='asdf' onRight={Actions.pop}/>
                       </Scene>
-                      <Scene key="profile" component={Profile} title="Профиль" icon={TabIcon} hideNavBar={true} lazy={true}/>
+                      <Scene key="profile" component={Profile} title="Профиль" icon={TabIcon} hideNavBar/>
                   </Scene>
               </Scene>
               <Scene key="error" component={Error}/>
-              
-              <Scene key="sessionpage" component={SessionPage}/>
           </Scene>
       </Router>
       )

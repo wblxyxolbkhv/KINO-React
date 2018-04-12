@@ -9,7 +9,8 @@ export default class Sessions extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          isLoading: true
+          isLoading: true,
+          error:false
         }
       }
 
@@ -27,7 +28,9 @@ export default class Sessions extends React.Component {
             });
           })
           .catch((error) =>{
-            console.error(error);
+            this.setState({
+              error:true,
+            })
         });
     }
 
@@ -44,6 +47,7 @@ export default class Sessions extends React.Component {
     }
 
     render(){
+      if(!this.state.error){
         if(this.state.isLoading){
             return(
               <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
@@ -52,7 +56,7 @@ export default class Sessions extends React.Component {
             )
         }
         return (
-          <View style={styles.container}>
+        <View style={styles.container}>
           <ListView
             style={[styles.container, styles.primaryContainer]}
             dataSource={this.state.dataSource}
@@ -66,8 +70,16 @@ export default class Sessions extends React.Component {
               /> 
           }
           />   
-      </View>
+        </View>
         );
+      }
+      else{
+      return(
+        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
+          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
+        </View>
+      )
+    }
     }
 }
 

@@ -7,7 +7,7 @@ export default class FilmRow extends React.Component {
   render() {
 		const gotofilmpage = () => Actions.filmpage({link: this.props.link, title:this.props.name});
     return (
-			<TouchableOpacity onPress={gotofilmpage}>
+			<Button onPress={gotofilmpage} activeOpacity={1}>
 				<View style={styles.filmRow}>
 						<View style={{flexDirection:'row'}}>
 							<Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.poster}}/>
@@ -24,7 +24,7 @@ export default class FilmRow extends React.Component {
 							</View>
 					</View>
 				</View>
-		</TouchableOpacity>
+		</Button>
     );
   }
 }

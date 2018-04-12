@@ -8,7 +8,8 @@ class Films extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          isLoading: true
+          isLoading: true,
+          error:false
         }
       }
 
@@ -22,11 +23,14 @@ class Films extends React.Component {
               dataSource: ds.cloneWithRows(responseJson),
               dataSourceAPI: responseJson
             }, 
-            function(){ 
+            function(){
+              
             });
           })
           .catch((error) =>{
-            console.error(error);
+            this.setState({
+              error:true,
+            })
           });
     }
 
@@ -43,6 +47,7 @@ class Films extends React.Component {
       }
 
     render(){
+      if(!this.state.error){
         if(this.state.isLoading){
             return(
               <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
@@ -53,10 +58,10 @@ class Films extends React.Component {
         return(
         <View style={styles.container}>
             <ListView
-            style={[styles.container, styles.primaryContainer]}
-            dataSource={this.state.dataSource}
-            renderSeparator= {this.ListViewItemSeparator}
-            renderRow={(data) => 
+              style={[styles.container, styles.primaryContainer]}
+              dataSource={this.state.dataSource}
+              renderSeparator= {this.ListViewItemSeparator}
+              renderRow={(data) => 
                <FilmRow 
                     name={data.name}
                     poster={data.poster}
@@ -74,6 +79,14 @@ class Films extends React.Component {
             />   
         </View>
         )
+      }
+      else{
+      return(
+        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
+          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
+        </View>
+      )
+    }
     }
 }
 

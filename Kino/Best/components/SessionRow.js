@@ -7,7 +7,8 @@ export default class SessionRow extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          isLoading: true
+          isLoading: true,
+          error:false
         }
       }
     componentDidMount(){
@@ -22,11 +23,14 @@ export default class SessionRow extends React.Component{
             });
           })
           .catch((error) =>{
-            console.error(error);
+            this.setState({
+              error:true,
+            })
           });
     }
     render(){
       const gotosessionpage = () => Actions.sessionpage({sessionLINK: this.props.link, filmLINK:this.props.filmLINK});
+      if(!this.state.error){
         if(this.state.isLoading){
             return(
               <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -35,7 +39,7 @@ export default class SessionRow extends React.Component{
             )
         }
         return(
-          <TouchableOpacity onPress={gotosessionpage}>
+          <Button onPress={gotosessionpage} activeOpacity={1}>
             <View style={styles.filmRow}>
               <View style={{flexDirection:'row'}}>
                 <Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.state.dataSourceAPI.poster}}/>
@@ -52,8 +56,16 @@ export default class SessionRow extends React.Component{
                 </View>
             </View>
           </View>
-      </TouchableOpacity>
+      </Button>
         );
+      }
+      else{
+      return(
+        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
+          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
+        </View>
+      )
+    }
     }
 }
 
