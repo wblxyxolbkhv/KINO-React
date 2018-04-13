@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView,} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView,RefreshControl} from 'react-native';
 import React from 'react';
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -10,7 +10,8 @@ export default class Sessions extends React.Component {
         super(props);
         this.state = {
           isLoading: true,
-          error:false
+          error:false,
+          refreshing: false,
         }
       }
 
@@ -45,7 +46,12 @@ export default class Sessions extends React.Component {
           />
         );
     }
-
+    _onRefresh() {
+      this.setState({refreshing: true});
+      this.componentWillMount().then(() => {
+        this.setState({refreshing: false});
+      });
+    }
     render(){
       if(!this.state.error){
         if(this.state.isLoading){
@@ -61,6 +67,12 @@ export default class Sessions extends React.Component {
             style={[styles.container, styles.primaryContainer]}
             dataSource={this.state.dataSource}
             renderSeparator= {this.ListViewItemSeparator}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
             renderRow={(data) => 
              <SessionRow 
                   link={data.link}

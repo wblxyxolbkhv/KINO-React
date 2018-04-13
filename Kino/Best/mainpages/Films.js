@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView, } from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView, RefreshControl} from 'react-native';
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import FilmRow from '../components/FilmRow';
@@ -9,7 +9,8 @@ class Films extends React.Component {
         super(props);
         this.state = {
           isLoading: true,
-          error:false
+          error:false,
+          refreshing: false,
         }
       }
 
@@ -45,7 +46,13 @@ class Films extends React.Component {
           />
         );
       }
-
+    _onRefresh() {
+        this.setState({refreshing: true});
+        this.componentWillMount().then(() => {
+          this.setState({refreshing: false});
+        });
+    }
+      
     render(){
       if(!this.state.error){
         if(this.state.isLoading){
@@ -61,6 +68,12 @@ class Films extends React.Component {
               style={[styles.container, styles.primaryContainer]}
               dataSource={this.state.dataSource}
               renderSeparator= {this.ListViewItemSeparator}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
               renderRow={(data) => 
                <FilmRow 
                     name={data.name}

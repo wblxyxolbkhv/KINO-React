@@ -1,5 +1,4 @@
-import {Platform,StyleSheet,Text,View,ListView, Alert,Image} from 'react-native';
-import Profile from './mainpages/Profile';
+import {Platform,StyleSheet,Text,View,ListView, Alert,Image,AppRegistry} from 'react-native';
 import React from 'react';
 
 export default class Error extends React.Component{
@@ -11,3 +10,4 @@ export default class Error extends React.Component{
         )
     }
 }
+AppRegistry.registerComponent('Best', () => Error);

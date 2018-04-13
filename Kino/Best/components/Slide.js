@@ -3,6 +3,7 @@ import {
   Text,View,ImageBackground,StyleSheet, ActivityIndicator, TouchableOpacity
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {Error} from '../mainpages/Error'
 
 export default class Slide extends React.Component{
     constructor() 
@@ -29,14 +30,14 @@ export default class Slide extends React.Component{
     }
 
     render(){
-        const gotofilmpage = () => Actions.filmpage({link: this.props.link, title:this.props.name});
+        const gotofilmpage = () => Actions.push('filmpage',{link: this.props.link, title:this.props.name});
         if(!this.state.error){
             if(this.state.isLoading){
             return(
               <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator/>
+                <ActivityIndicator size="large"/>
               </View>
-            )
+                )
             }
             return(
             <TouchableOpacity style={styles.slide} onPress={gotofilmpage} activeOpacity={1}>
@@ -52,9 +53,7 @@ export default class Slide extends React.Component{
         }
         else{
         return(
-            <View style={{backgroundColor:'#0f0',flex:1,justifyContent:'center',alignItems: 'center',}}>
-                <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
-            </View>
+            <View></View>
         )
     }
     }

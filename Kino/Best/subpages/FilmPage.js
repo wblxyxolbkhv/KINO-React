@@ -1,12 +1,15 @@
 import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView} from 'react-native';
 import YouTube from 'react-native-youtube';
+import {Actions} from 'react-native-router-flux';
+import {Error} from '../mainpages/Error'
 
 export default class Profile extends React.Component {
   constructor() 
   {
     super();
     this.state={isLoading:true,error:false}
+    Actions.refresh
   }
 
   componentWillMount() {
@@ -43,19 +46,24 @@ export default class Profile extends React.Component {
       )
     }
     return (
-		  <ScrollView style={styles.container}>
+		  <ScrollView style={styles.container} ref='_scrollView'>
         <View style={{flex:1}}>
           <View style={styles.postercontainer}>
             <Image style={styles.poster} source={{uri:'http://'+ global.ip + '/images/Posters/' + this.state.dataSourceAPI.poster}}/>
           </View>
         </View>
-        <View style={{flex:1}}>
+        <View>
           <Text style={styles.h1}>
             {this.state.dataSourceAPI.name}
           </Text>
-          <Text style={styles.text}>
-            Годвыпуска
-          </Text>
+          <View style={{flexDirection: 'row', flex: 1}}>
+            <View style={{marginRight:60}}>
+              <Text style={styles.textleft}>Год выпуска</Text>
+            </View>
+            <View>
+              <Text style={styles.textright}>{this.state.dataSourceAPI.releaseYear}</Text>
+            </View>
+          </View>
           <Text style={styles.text}>
             Длительность
           </Text>
@@ -97,6 +105,9 @@ export default class Profile extends React.Component {
             onError={e => this.setState({ error: e.error })}
             style={{ alignSelf: 'stretch', height: 200 }}
           />
+        </View>
+        <View style={{flex:1,height:100}}>
+          <Text onPress={() => { this.refs._scrollView.scrollTo(0); }}>sdfgfdhgfh</Text>
         </View>		
 		</ScrollView>
     );
@@ -123,7 +134,11 @@ var styles = StyleSheet.create({
     padding:20,
     backgroundColor:'#161a23',
   },
-  text:{
+  textleft:{
+    fontWeight: 'bold',
+	  color: 'white'
+  },
+  textright:{
     fontWeight: 'bold',
 	  color: 'white'
   },
