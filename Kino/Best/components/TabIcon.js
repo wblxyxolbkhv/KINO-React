@@ -24,28 +24,28 @@ const TabIcon = (props) => {
               case 'Подборка':{
             return(
               <View style={{flex:1}}>
-                <Image style={style.icon} source={require('../tabimages/hot.png')}/>
+                <Image style={style.icon} source={require('../images/hot.png')}/>
                 </View>
             )
           };
           case 'Фильмы':{
             return(
               <View style={{flex:1}}>
-                <Image style={style.icon}source={require('../tabimages/film.png')}/>
+                <Image style={style.icon}source={require('../images/film.png')}/>
                 </View>
             )
           };
           case 'Сеансы':{
             return(
               <View style={{flex:1}}>
-                <Image style={style.icon} source={require('../tabimages/session.png')}/>
+                <Image style={style.icon} source={require('../images/session.png')}/>
                 </View>
             )
           };
           case 'Профиль':{
             return(
               <View style={{flex:1}}>
-                <Image style={style.icon} source={require('../tabimages/profile.png')}/>
+                <Image style={style.icon} source={require('../images/profile.png')}/>
                 </View>
             )
           };

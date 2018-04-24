@@ -1,8 +1,12 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-export default class Profile extends React.Component {
+export default class Profile extends React.Component { 
+  LogOff(){
+    global.isAuthenticated=false;
+    global.token='';
+  }
   render() {
     return (
 		  <View>
@@ -20,6 +24,13 @@ export default class Profile extends React.Component {
           <Text>
                 Что-то ещё
           </Text>
+        </View>
+        <View>
+          <TouchableOpacity style={styles.button} onPress={()=>this.LogOff()}>
+            <Text style={styles.buttontext}>
+              Выйти
+            </Text>
+          </TouchableOpacity>
         </View>		
 		</View>
     );
@@ -48,6 +59,19 @@ var styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     alignSelf: 'stretch',
+},
+button:{
+  marginTop: 10,
+  height:35,
+  width:60,
+  backgroundColor:'#DDDDDD',
+  justifyContent:'center',
+  alignItems: 'center',
+  borderRadius: 4, 
+  borderWidth: 1,
+},
+buttontext:{
+  color:'black'
 }
 });
 

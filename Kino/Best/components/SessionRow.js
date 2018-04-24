@@ -11,47 +11,22 @@ export default class SessionRow extends React.Component{
           error:false
         }
       }
-    componentDidMount(){
-        return fetch('http://'+global.ip+'/api/film/'+this.props.filmLINK)
-        .then((response) => response.json())
-          .then((responseJson) => {
-            this.setState({
-              isLoading: false,
-              dataSourceAPI: responseJson
-            }, 
-            function(){ 
-            });
-          })
-          .catch((error) =>{
-            this.setState({
-              error:true,
-            })
-          });
-    }
     render(){
-      const gotosessionpage = () => Actions.sessionpage({sessionLINK: this.props.link, filmLINK:this.props.filmLINK});
-      if(!this.state.error){
-        if(this.state.isLoading){
-            return(
-              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator/>
-              </View>
-            )
-        }
+      const gotosessionpage = () => Actions.sessionpage({link:this.props.session.link});
         return(
           <Button onPress={gotosessionpage} activeOpacity={1}>
             <View style={styles.filmRow}>
               <View style={{flexDirection:'row'}}>
-                <Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.state.dataSourceAPI.poster}}/>
-                <View style={{flexDirection:'column'}}>
-                  <Text style={styles.filmName}>
-                    {this.state.dataSourceAPI.name}
+                <Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.session.poster}}/>
+                <View style={{flexDirection:'column',width: global.width-115}}>
+                  <Text style={styles.filmName} ellipsizeMode='tail' numberOfLines={3}>
+                    {this.props.session.film}
                   </Text>
                   <Text style={styles.extraFilmInfo}>
-                    Продолжительность: {this.state.dataSourceAPI.duration} минут
+                    Длительность: {this.props.session.duration} минут
                   </Text>
                   <Text style={styles.extraFilmInfo}>
-                    Время сеанса: {this.props.sessionTime}
+                    Время сеанса: {this.props.session.sessionTime.substring(11,16)}
                   </Text>
                 </View>
             </View>
@@ -59,14 +34,7 @@ export default class SessionRow extends React.Component{
       </Button>
         );
       }
-      else{
-      return(
-        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
-          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
-        </View>
-      )
-    }
-    }
+    
 }
 
 var styles = StyleSheet.create({
@@ -77,9 +45,9 @@ var styles = StyleSheet.create({
       },
       
     poster: {
-        width: 100,
-        height: 120,
-          marginRight: 15,
+        width: 90,
+        height: 135,
+        marginRight: 15,
       },
       
     filmRow: {

@@ -1,9 +1,10 @@
-import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView,RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView,RefreshControl,ScrollView} from 'react-native';
 import React from 'react';
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import YouTube from 'react-native-youtube';
 import SessionRow from '../components/SessionRow'
+import Error from '../mainpages/Error'
 
 export default class Sessions extends React.Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class Sessions extends React.Component {
             this.setState({
               isLoading: false,
               dataSource: ds.cloneWithRows(responseJson),
-              dataSourceAPI: responseJson
+              dataSourceAPI: responseJson,
+              error:false
             }, 
             function(){
             });
@@ -50,14 +52,15 @@ export default class Sessions extends React.Component {
       this.setState({refreshing: true});
       this.componentWillMount().then(() => {
         this.setState({refreshing: false});
+        Actions.refresh
       });
-    }
+  }
     render(){
       if(!this.state.error){
         if(this.state.isLoading){
             return(
-              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-                <ActivityIndicator/>
+              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor:'#161a23'}}>
+                <ActivityIndicator size="large" color='#f6a21c'/>
               </View>
             )
         }
@@ -75,9 +78,7 @@ export default class Sessions extends React.Component {
             }
             renderRow={(data) => 
              <SessionRow 
-                  link={data.link}
-                  filmLINK={data.filmLINK}
-                  sessionTime={data.sessionTime.substring(11,16)}
+                  session={data}
                   style={styles.filmRow}
               /> 
           }
@@ -87,9 +88,14 @@ export default class Sessions extends React.Component {
       }
       else{
       return(
-        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
-          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
-        </View>
+        <ScrollView style={{flex:1}} contentContainerStyle={{flex:1}} refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
+          <Error/>
+        </ScrollView>
       )
     }
     }

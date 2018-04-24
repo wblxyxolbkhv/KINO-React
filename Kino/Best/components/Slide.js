@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Text,View,ImageBackground,StyleSheet, ActivityIndicator, TouchableOpacity
+  Text,View,ImageBackground,StyleSheet, ActivityIndicator, TouchableOpacity,Dimensions
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {Error} from '../mainpages/Error'
@@ -9,69 +9,48 @@ export default class Slide extends React.Component{
     constructor() 
     {
         super();
-        this.state={isLoading:true,error:false}
-    }
-    componentWillMount() {
-        return fetch("http://"+ global.ip + "/api/film/"+this.props.link)
-        .then((response) => response.json())
-          .then((responseJson) => {
-            this.setState({
-              isLoading: false,
-              dataSourceAPI: responseJson,
-            }, 
-            function(){
-            });
-        })
-        .catch((error) =>{
-            this.setState({
-                error:true,
-              })
-        });
+        this.state={isLoading:true}
     }
 
     render(){
-        const gotofilmpage = () => Actions.push('filmpage',{link: this.props.link, title:this.props.name});
-        if(!this.state.error){
-            if(this.state.isLoading){
-            return(
-              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator size="large"/>
-              </View>
-                )
-            }
+        const gotofilmpage = () => Actions.popAndPush('filmpage',{film:this.props.film,title:this.props.film.name});
             return(
             <TouchableOpacity style={styles.slide} onPress={gotofilmpage} activeOpacity={1}>
-                <ImageBackground style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/'+this.state.dataSourceAPI.poster}}>
+                <ImageBackground style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/'+this.props.film.poster}}>
                     <View style={styles.slidetext}>
-                        <Text style={styles.text}>
-                            {this.state.dataSourceAPI.name}
+                        <Text style={styles.text} adjustsFontSizeToFit>
+                            {this.props.film.name}
                         </Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
             )
-        }
-        else{
-        return(
-            <View></View>
-        )
     }
-    }
+    
 }
 var styles = {
     poster:{
       flex:1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingLeft:30,
+      paddingRight:30
     },
     container: {
-      flex: 1
+      flex: 1,
     },
     slidetext:{
       justifyContent: 'center',
       alignItems: 'center',
-      flex:1
+      flexDirection:'row',
+      backgroundColor:'rgba(0, 0, 0, 0.6)',
+      minHeight:120,
+      width: Dimensions.get('screen').width-60,
     },
     slide: {
       flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     text: {
       color: '#fff',

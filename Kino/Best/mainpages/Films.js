@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView, RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight,ActivityIndicator,ListView, RefreshControl,ScrollView} from 'react-native';
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import FilmRow from '../components/FilmRow';
+import Error from '../mainpages/Error'
 
 class Films extends React.Component {
     constructor(props) {
@@ -22,7 +23,8 @@ class Films extends React.Component {
             this.setState({
               isLoading: false,
               dataSource: ds.cloneWithRows(responseJson),
-              dataSourceAPI: responseJson
+              dataSourceAPI: responseJson,
+              error:false
             }, 
             function(){
               
@@ -50,6 +52,7 @@ class Films extends React.Component {
         this.setState({refreshing: true});
         this.componentWillMount().then(() => {
           this.setState({refreshing: false});
+          Actions.refresh
         });
     }
       
@@ -57,8 +60,8 @@ class Films extends React.Component {
       if(!this.state.error){
         if(this.state.isLoading){
             return(
-              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
-                <ActivityIndicator/>
+              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'#161a23'}}>
+                <ActivityIndicator size="large" color='#f6a21c'/>
               </View>
             )
         }
@@ -76,16 +79,7 @@ class Films extends React.Component {
               }
               renderRow={(data) => 
                <FilmRow 
-                    name={data.name}
-                    poster={data.poster}
-                    releaseYear={data.releaseYear}
-                    duration={data.duration}
-                    genre={data.genre}
-                    director={data.director}
-                    country={data.country}
-                    description={data.description}
-                    ageLimit={data.ageLimit}
-                    link={data.link}
+                    film={data}
                     style={styles.filmRow}
                 /> 
             }
@@ -95,9 +89,14 @@ class Films extends React.Component {
       }
       else{
       return(
-        <View style={{backgroundColor:'#f00',flex:1,justifyContent:'center',alignItems: 'center',}}>
-          <Text style={{fontSize:30,fontWeight:'bold'}}>Пиздец</Text>
-        </View>
+        <ScrollView style={{flex:1}} contentContainerStyle={{flex:1}} refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }>
+          <Error/>
+        </ScrollView>
       )
     }
     }

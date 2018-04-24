@@ -1,28 +1,26 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image,TouchableOpacity,Dimensions} from 'react-native';
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
 export default class FilmRow extends React.Component {
   render() {
-		const gotofilmpage = () => Actions.filmpage({link: this.props.link, title:this.props.name});
+		const gotofilmpage = () => Actions.filmpage({film:this.props.film,title:this.props.film.name});
     return (
 			<Button onPress={gotofilmpage} activeOpacity={1}>
-				<View style={styles.filmRow}>
-						<View style={{flexDirection:'row'}}>
-							<Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.poster}}/>
-							<View style={{flexDirection:'column'}}>
-								<Text style={styles.filmName}>
-									{this.props.name}
+						<View style={styles.filmRow}>
+							<Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.film.poster}}/>
+							<View style={{flexDirection:'column',width: global.width-115}}>
+								<Text style={styles.filmName} ellipsizeMode='tail' numberOfLines={3}>
+									{this.props.film.name}
 								</Text>
 								<Text style={styles.extraFilmInfo}>
-									Год: {this.props.releaseYear}
+									Год: {this.props.film.releaseYear}
 								</Text>
 								<Text style={styles.extraFilmInfo}>
-									Продолжительность: {this.props.duration} минут
+									Длительность: {this.props.film.duration} минут
 								</Text>
 							</View>
-					</View>
 				</View>
 		</Button>
     );
@@ -33,12 +31,12 @@ var styles = StyleSheet.create({
   filmName: {
 	  fontSize: 24,
 	  fontWeight: 'bold',
-	  color: 'white'
+		color: 'white',
 	},
 	
   poster: {
-	  width: 100,
-	  height: 120,
+	  width: 90,
+	  height: 135,
 		marginRight: 15,
 	},
 	
@@ -48,10 +46,12 @@ var styles = StyleSheet.create({
 	  paddingBottom: 10,
 	  paddingTop: 10,
 	  paddingLeft: 10,
-	  paddingRight: 10,
+		paddingRight: 10,
+		flexDirection:'row',
+		
   },
   extraFilmInfo: {
-		color: '#ccc'
+		color: '#ccc',
   }
 });
 
