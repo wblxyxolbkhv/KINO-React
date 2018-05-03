@@ -13,11 +13,14 @@
     "react-native": "0.54.2",
     "react-native-button": "^2.3.0",
     "react-native-htmlview": "^0.12.1",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-pinch-zoom-view": "^0.1.6",
     "react-native-render-html": "^3.9.3",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-scroll-to-top": "^1.1.0",
     "react-native-slideshow": "^1.0.1",
     "react-native-swiper": "^1.5.13",
+    "react-native-textinput-effects": "^0.4.2",
     "react-native-youtube": "^1.1.0"
   },
   "devDependencies": {

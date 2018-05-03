@@ -66,17 +66,17 @@ export default class FilmSession extends React.Component {
                 </View>
             </View>
             <View style={styles.sessioncontainer}>
-            {this.state.dataSourceAPI.map((item,key)=>{
-                const gotosessionpage = () => {if(this.state.key){Actions.sessionpage({link:item.link});this.setState({key:false})} 
-                else{Actions.push('sessionpage',{link:item.link})}}
-                return ( 
-                  <Button onPress={gotosessionpage} activeOpacity={1}>
-                      <View style={styles.timecontainer}>
-                        <Text style={styles.time}>{item.sessionTime.substring(11,16)}{this.state.key}</Text>
-                    </View>
-                  </Button>
-                  )
-                })}    
+              {this.state.dataSourceAPI.map(item=>
+                item.sessions.map(itemnew=>{
+                  const gotosessionpage = () => {Actions.push('sessionpage',{link:itemnew.link})}
+                  return ( 
+                    <Button onPress={gotosessionpage} activeOpacity={1}>
+                        <View style={styles.timecontainer}>
+                          <Text style={styles.time}>{itemnew.sessionTime.substring(11,16)}</Text>
+                      </View>
+                    </Button>
+                    )
+                  }))} 
             </View>        
         </View>
         );
