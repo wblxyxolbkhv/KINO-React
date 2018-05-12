@@ -2,6 +2,7 @@ import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView,RefreshControl,WebView,Dimensions,TouchableOpacity} from 'react-native';
 import Error from '../mainpages/Error'
 import { Actions } from 'react-native-router-flux';
+import ViewTransformer from 'react-native-view-transformer';
 
 export default class SessionPage extends React.Component {
   constructor() 
@@ -94,11 +95,11 @@ componentDidMount() {
               </View>
             </View>
             <View style={styles.separator}></View>
-            <View style={{alignItems:'center',marginTop:10}}>
-              <View><Text style={{color:'white',fontSize:20}}>Экран</Text></View>
-              
+            <View style={{alignItems:'center',marginTop:10,flex:1,flexDirection:'column'}}>
+              <View style={{flex:1,flexDirection:'row'}}><Text style={{color:'white',fontSize:20}}>Экран</Text></View>
+              <ViewTransformer style={{flex:1,flexDirection:'row'}}>
                 <View style={{width: 100,height:100,backgroundColor:'white'}}></View>
-              
+              </ViewTransformer>
                 <View style={styles.blueborder}>
                   <View style={styles.legend}/>
                   <Text style={styles.legendtext}>- Занято</Text>
