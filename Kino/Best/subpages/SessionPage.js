@@ -2,12 +2,17 @@ import React from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView,RefreshControl,WebView,Dimensions,TouchableOpacity} from 'react-native';
 import Error from '../mainpages/Error'
 import { Actions } from 'react-native-router-flux';
+import ViewTransformer from 'react-native-view-transformer';
 
 export default class SessionPage extends React.Component {
   constructor() 
     {
       super();
-      this.state={isLoading:true, error:false,refreshing: false}
+      this.state={
+		  isLoading:true, 
+		  error:false,
+		  refreshing: false, 
+		}
   }
   _onRefresh() {
     this.setState({refreshing: true});
@@ -97,7 +102,21 @@ componentDidMount() {
             <View style={{alignItems:'center',marginTop:10}}>
               <View><Text style={{color:'white',fontSize:20}}>Экран</Text></View>
               
-                <View style={{width: 100,height:100,backgroundColor:'white'}}></View>
+                <ViewTransformer onTransformGestureReleased={transformObj => {
+						return true;
+					}}
+					onPress={()=> {this.state.scrollViewDisabled = true}}
+					<View style={
+						{
+							marginTop:10, 
+							backgroundColor:'#ffffff', 
+							width: 300, 
+							height: 300,
+						}
+					}>
+						<View style={{width: 100, height: 100, backgroundColor: '#ff0000'}} />
+					</View>
+				</ViewTransformer>
               
                 <View style={styles.blueborder}>
                   <View style={styles.legend}/>
