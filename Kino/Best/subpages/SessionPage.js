@@ -8,11 +8,7 @@ export default class SessionPage extends React.Component {
   constructor() 
     {
       super();
-      this.state={
-		  isLoading:true, 
-		  error:false,
-		  refreshing: false, 
-		}
+      this.state={isLoading:true, error:false,refreshing: false}
   }
   _onRefresh() {
     this.setState({refreshing: true});
@@ -102,21 +98,7 @@ componentDidMount() {
             <View style={{alignItems:'center',marginTop:10}}>
               <View><Text style={{color:'white',fontSize:20}}>Экран</Text></View>
               
-                <ViewTransformer onTransformGestureReleased={transformObj => {
-						return true;
-					}}
-					onPress={()=> {this.state.scrollViewDisabled = true}}
-					<View style={
-						{
-							marginTop:10, 
-							backgroundColor:'#ffffff', 
-							width: 300, 
-							height: 300,
-						}
-					}>
-						<View style={{width: 100, height: 100, backgroundColor: '#ff0000'}} />
-					</View>
-				</ViewTransformer>
+                <View style={{width: 100,height:100,backgroundColor:'white'}}></View>
               
                 <View style={styles.blueborder}>
                   <View style={styles.legend}/>
@@ -140,6 +122,15 @@ componentDidMount() {
                 </TouchableOpacity>
               </View>
             </View>
+			<ViewTransformer 
+				style={{flex:1,flexDirection:'row',marginTop:15}}
+				onTransformGestureReleased={(transformObj)=>{return true;}}>
+				<View style={{
+					backgroundColor: '#ffffff',
+					width: 300,
+					height: 300
+				}}/>
+			</ViewTransformer>
           </View>
         </ScrollView>
       )

@@ -21,7 +21,6 @@
     "react-native-slideshow": "^1.0.1",
     "react-native-swiper": "^1.5.13",
     "react-native-textinput-effects": "^0.4.2",
-    "react-native-view-transformer": "0.0.28",
     "react-native-youtube": "^1.1.0"
   },
   "devDependencies": {
