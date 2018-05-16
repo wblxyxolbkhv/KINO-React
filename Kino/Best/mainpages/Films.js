@@ -16,7 +16,7 @@ class Films extends React.Component {
       }
 
     componentWillMount() {
-        return fetch('http:/'+global.ip+'/api/film')
+        return fetch(global.ip+'/api/film')
         .then((response) => response.json())
           .then((responseJson) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

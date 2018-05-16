@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 
 export default class FavoriteTable extends React.Component {
   componentWillMount() {
-    return fetch('http://' + global.ip + '/api/film/favorite ',
+    return fetch(global.ip + '/api/film/favorite',
       {
         headers: {
           Authorization: 'Bearer ' + global.token,

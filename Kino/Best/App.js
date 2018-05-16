@@ -12,6 +12,7 @@ import SessionPage from './subpages/SessionPage';
 import TabIcon from './components/TabIcon';
 import Login from './mainpages/Login'
 import Settings from './subpages/Settings'
+import History from './subpages/History'
 
 import { Scene, Router, TabBar, Modal, Schema, Actions, Reducer, ActionConst, Tabs} from 'react-native-router-flux';
 
@@ -22,7 +23,7 @@ const reducerCreate = params=>{
   }
 };
 
-global.ip="192.168.43.107:51657"
+global.ip="http://192.168.43.107:51657"
 global.width=Dimensions.get('screen').width-40
 global.isAuthenticated=false
 global.token=''
@@ -56,7 +57,7 @@ export default class App extends React.Component {
                       </Scene>
                       <Scene key="profilecontainer" tabs title="Профиль" icon={TabIcon} hideNavBar tabBarPosition='top' backToInitial lazy tabStyle={{backgroundColor:'#161a23',borderBottomWidth:0}}>
                         <Scene key="profile" initial component={Profile} title="Профиль" hideNavBar onEnter={()=>this.myOnEnter('profile')}/>
-                        <Scene key="history" component={Profile} title="История" hideNavBar /> 
+                        <Scene key="history" component={History} title="История" hideNavBar /> 
                         <Scene key="settings" component={Settings} title="Настройки" hideNavBar /> 
                       </Scene>
                   </Scene>

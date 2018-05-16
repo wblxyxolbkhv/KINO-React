@@ -9,7 +9,7 @@ export default class FilmRow extends React.Component {
     return (
 			<Button onPress={gotofilmpage} activeOpacity={1}>
 						<View style={styles.filmRow}>
-							<Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.film.poster}}/>
+							<Image style={styles.poster} source={{uri:global.ip+'/images/Posters/' + this.props.film.poster}}/>
 							<View style={{flexDirection:'column',width: global.width-115}}>
 								<Text style={styles.filmName} ellipsizeMode='tail' numberOfLines={3}>
 									{this.props.film.name}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView,Dimensions,TouchableOpacity,RefreshControl,} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView,Dimensions,TouchableOpacity,RefreshControl,ToastAndroid} from 'react-native';
 import YouTube from 'react-native-youtube';
 import {Actions} from 'react-native-router-flux';
 import {Error} from '../mainpages/Error'
@@ -10,7 +10,7 @@ import Rating from '../components/Rating'
 export default class Profile extends React.Component {
   constructor() {
     super();
-    this.state = { isLoading: true, favorite: true, refreshing: false, }
+    this.state = { isLoading: true, refreshing: false, isLoading: true }
   }
 
   getvideoid() {
@@ -25,8 +25,8 @@ export default class Profile extends React.Component {
         tintColor: '#f6a21c',
       },
     }
-    if (global.isAuthenticated)
-      switch (this.state.favorite) {
+    if (!this.state.isLoading)
+      switch (!this.state.favorite) {
         case true: {
           return (<Image style={style.favorite} source={require('../images/bookmark.png')} />)
         }
@@ -40,20 +40,85 @@ export default class Profile extends React.Component {
   }
 
   rating() {
-    if (this.props.film.localRating != null)
-      return (
-        <Rating localRating={this.props.film.localRating} />
-      )
-    else
-      return (<Rating localRating={5} />)
+    if (global.isAuthenticated) {
+      if (this.props.film.localRating != null)
+        return (
+          <Rating localRating={this.props.film.localRating} disabled={false} link={this.props.film.link}/>
+        )
+      else
+        return (<Rating localRating={0} disabled={false} link={this.props.film.link}/>)
+    }
+    else{
+      if (this.props.film.localRating != null)
+        return (
+          <Rating localRating={this.props.film.localRating} disabled={true}/>
+        )
+      else
+        return (<Rating localRating={0} disabled={true}/>)
+    }
+  }
+
+  componentWillMount() {
+    if (global.isAuthenticated) {
+      return fetch(global.ip + '/api/film/' + this.props.film.link + '/favorite',
+        {
+          headers: {
+            Authorization: 'Bearer ' + global.token,
+          },
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({
+            isLoading: false,
+            favorite: responseJson
+          },
+            function () {
+            });
+          if (this.state.favorite.favorite)
+            this.setState({ favorite: true })
+          else
+            this.setState({ favorite: false })
+        })
+        .catch((error) => {
+          this.setState({
+            error: true,
+          })
+        });
+    }
   }
 
   addFavorite() {
     this.setState({ favorite: (!this.state.favorite) })
-    if (this.state.favorite)
-      this.refs.toast.show('Фильм добавлен в избранное');
-    else
-      this.refs.toast.show('Фильм удалён из избранного');
+    if (!this.state.favorite) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Фильм добавлен в избранное!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        150
+      );
+      fetch(global.ip + '/api/film/' + this.props.film.link + '/favorite/add',
+        {
+          headers: {
+            Authorization: 'Bearer ' + global.token,
+          },
+        });
+    }
+    else {
+      ToastAndroid.showWithGravityAndOffset(
+        'Фильм удалён из избранного!',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        150
+      );
+      fetch(global.ip + '/api/film/' + this.props.film.link + '/favorite/remove',
+        {
+          headers: {
+            Authorization: 'Bearer ' + global.token,
+          },
+        });
+    }
   }
   render() {
     const gotocomments = () => Actions.comments({ link: this.props.film.link, title: 'Комментарии' });
@@ -68,7 +133,7 @@ export default class Profile extends React.Component {
         <View style={styles.container} >
           <View style={{ flex: 1 }}>
             <View style={styles.postercontainer}>
-              <Image style={styles.poster} source={{ uri: 'http://' + global.ip + '/images/Posters/' + this.props.film.poster }} />
+              <Image style={styles.poster} source={{ uri: global.ip + '/images/Posters/' + this.props.film.poster }} />
             </View>
           </View>
           <View>
@@ -151,7 +216,7 @@ export default class Profile extends React.Component {
           <View>
             <Text style={styles.h2}>
               Трейлер
-          </Text>
+            </Text>
             <View style={styles.separator}></View>
             <YouTube
               apiKey="AIzaSyBnfKSaK1nHiY4MgTCUlTmPFKN0mZwEXJk"
@@ -165,17 +230,17 @@ export default class Profile extends React.Component {
               onChangeState={e => this.setState({ status: e.state })}
               onChangeQuality={e => this.setState({ quality: e.quality })}
               onError={e => this.setState({ error: e.error })}
-              style={{ alignSelf: 'stretch', height: 200, marginTop: 10, }}
+              style={{ alignSelf: 'stretch', height: 200, marginTop: 10, marginBottom: 10,}}
             />
           </View>
+          {this.rating()}
+          
           <View style={styles.comments}>
             <TouchableOpacity onPress={gotocomments} activeOpacity={1}>
               <Text style={styles.h2}>Комментарии <Text style={{ marginLeft: 20, color: '#17a2b8' }}>{this.props.film.amountComment}</Text></Text>
             </TouchableOpacity>
           </View>
         </View>
-        {this.rating()}
-        
         <Toast ref="toast" positionValue={10} fadeInDuration={300} fadeOutDuration={300} style={{ backgroundColor: '#f6a21c' }} textStyle={{ color: 'white' }} />
       </ScrollView>
     );
@@ -243,6 +308,7 @@ var styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
   comments:{
+    marginTop: 10,
   },
   favorite:{
     height:45,

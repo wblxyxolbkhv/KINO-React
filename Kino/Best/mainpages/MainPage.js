@@ -34,7 +34,7 @@ export default class MainPage extends React.Component {
     });
 }
   componentWillMount() {
-    return fetch('http://'+global.ip+'/api/film/featured', {timeout: 500,follow:0})
+    return fetch(global.ip+'/api/film/featured', {timeout: 500,follow:0})
     .then((response) => response.json())
       .then((responseJson) => {
         this.setState({

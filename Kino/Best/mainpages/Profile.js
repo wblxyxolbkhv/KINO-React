@@ -11,7 +11,7 @@ export default class Profile extends React.Component {
     this.state = { isLoading: true, error: false, refreshing: false }
   }
   componentWillMount() {
-    return fetch('http://' + global.ip + '/api/profile/info',
+    return fetch(global.ip + '/api/profile/info',
       {
         headers: {
           Authorization: 'Bearer ' + global.token,
@@ -33,6 +33,7 @@ export default class Profile extends React.Component {
         })
       });
   }
+
   _onRefresh() {
     this.setState({ refreshing: true });
     this.componentWillMount().then(() => {
@@ -40,17 +41,19 @@ export default class Profile extends React.Component {
       Actions.refresh({ key: Math.random() })
     });
   }
+
   LogOff() {
     global.isAuthenticated = false;
     global.token = '';
     Actions.push('login')
   }
+  
   image() {
     if (this.state.dataSourceAPI.profileImage == null) {
       return (<Image style={styles.poster} source={require('../images/default.png')} />)
     }
     else
-      return (<Image style={styles.poster} source={{ uri: 'http://' + global.ip + '/images/Posters/' + this.state.dataSourceAPI.profileImage }} />)
+      return (<Image style={styles.poster} source={{ uri: global.ip + '/images/Profiles/' + this.state.dataSourceAPI.profileImage }} />)
   }
   render() {
     if (!this.state.error) {
@@ -150,6 +153,7 @@ var styles = StyleSheet.create({
   },
   poster: {
     height: 200,
+    width:200,
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 4,
@@ -170,26 +174,23 @@ var styles = StyleSheet.create({
     margin: 5,
   },
   textrow: {
-    flexDirection: 'column', flex: 1, marginBottom: 12,
+    flexDirection: 'row', flex: 1, marginBottom: 12,
   },
   textleft: {
     color: '#17a2b8',
-    alignItems: 'flex-start',
   },
   textright: {
     color: 'white',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
   },
   rightcolumn: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingRight: 40,
+    flex: 2,
+    paddingRight: 10,
+    width:'100%'
   },
   leftcolumn: {
     flex: 1,
-    flexDirection: 'column',
-    paddingLeft: 40,
+    paddingLeft: 30,
+    width:'100%'
   },
   h2:{
     fontSize: 30,

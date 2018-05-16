@@ -17,7 +17,7 @@ export default class SessionRow extends React.Component{
           <Button onPress={gotosessionpage} activeOpacity={1}>
             <View style={styles.filmRow}>
               <View style={{flexDirection:'row'}}>
-                <Image style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/' + this.props.session.poster}}/>
+                <Image style={styles.poster} source={{uri:global.ip+'/images/Posters/' + this.props.session.poster}}/>
                 <View style={{flexDirection:'column',width: global.width-115}}>
                   <Text style={styles.filmName} ellipsizeMode='tail' numberOfLines={3}>
                     {this.props.session.film}

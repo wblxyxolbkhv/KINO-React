@@ -6,7 +6,7 @@ import { Hoshi } from 'react-native-textinput-effects';
 export default class Login extends React.Component {
 	Login() {
 		this.setState({ isLoading: true })
-		fetch('http://' + global.ip + '/api/profile/token/?username=master&password=`Qwerty123')
+		fetch(global.ip + '/api/profile/token/?username=master&password=`Qwerty123')
 			.then(function (response) {
 				if (!response.ok) {
 					switch (response.status) {

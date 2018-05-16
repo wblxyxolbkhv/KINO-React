@@ -17,7 +17,7 @@ export default class Sessions extends React.Component {
       }
 
       componentWillMount() {
-        return fetch('http:/'+global.ip+'/api/session/all')
+        return fetch(global.ip+'/api/session/all')
         .then((response) => response.json())
           .then((responseJson) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
