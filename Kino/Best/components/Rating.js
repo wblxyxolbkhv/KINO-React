@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView,Dimensions,TouchableOpacity,RefreshControl,ToastAndroid} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import { AppRegistry, StyleSheet, Text, View, Image, ActivityIndicator, ScrollView, Dimensions, TouchableOpacity, RefreshControl, ToastAndroid } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import Slider from "react-native-slider";
 
 export default class Rating extends React.Component {
@@ -9,26 +9,39 @@ export default class Rating extends React.Component {
         this.state = { idLoading: true }
     }
     componentWillMount() {
-        this.setState({ isLoading: false,value: this.props.localRating})
-        if(this.props.localRating==0){
-            this.setState({value:5})
+        this.setState({ isLoading: false, value: this.props.localRating })
+        if (this.props.localRating == 0) {
+            this.setState({ value: 5 })
         }
     }
 
-    Rate(){
+    Rate() {
         ToastAndroid.showWithGravityAndOffset(
             'Фильм оценён!',
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
             0,
             150
-          );
-          fetch(global.ip + '/api/film/'+this.props.link+'/',
-          {
-            headers: {
-              Authorization: 'Bearer ' + global.token,
-            },
-          });
+        );
+        fetch(global.ip + '/api/film/' + this.props.link + '/rate/?rate=' + this.state.value,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + global.token,
+                },
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (this.state.userrating != 1) {
+                    this.setState({
+                    },
+                        function () {
+                        });
+                }
+            })
+            .catch((error) => {
+                this.setState({
+                })
+            });
     }
     rightcolumn() {
         if (this.props.disabled) {
@@ -84,47 +97,47 @@ export default class Rating extends React.Component {
                             <Text style={styles.buttontext}>Оценить</Text>
                         </TouchableOpacity>
                     </View>
-                    
+
                 </View>
             )
         }
     }
 }
-const styles=StyleSheet.create({
-    button:{
-		marginTop: 20,
-		height:42,
-		width:'100%',
-		backgroundColor:'#161a23',
-		justifyContent:'center',
-		alignItems: 'center',
-		borderColor:'#f6a21c',
-		borderWidth: 1,
-		borderRadius: 5,
+const styles = StyleSheet.create({
+    button: {
+        marginTop: 20,
+        height: 42,
+        width: '100%',
+        backgroundColor: '#161a23',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f6a21c',
+        borderWidth: 1,
+        borderRadius: 5,
     },
-    buttontext:{
-		color:'white',
-		fontSize:25,
-		fontWeight: 'bold',
+    buttontext: {
+        color: 'white',
+        fontSize: 25,
+        fontWeight: 'bold',
     },
-    column:{
-        flex:1,
+    column: {
+        flex: 1,
         flexDirection: 'column',
     },
-    text:{
-        color:'white',
+    text: {
+        color: 'white',
         fontSize: 15,
     },
-    h2:{
-        color:'white',
-        fontSize:30,
-        fontWeight:'bold',
-        marginBottom:5,
+    h2: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
-    separator:{
+    separator: {
         height: .5,
         width: "100%",
         backgroundColor: "#FFF",
         marginTop: 10,
-      },
+    },
 })

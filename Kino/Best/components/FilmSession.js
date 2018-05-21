@@ -9,6 +9,10 @@ export default class FilmSession extends React.Component {
     super();
     this.state = { isLoading: true, error: false, refreshing: false, day: 'Сегодня', idday: 0 }
   }
+  
+  hall(){
+
+  }
 
   componentDidMount() {
     var now = new Date();

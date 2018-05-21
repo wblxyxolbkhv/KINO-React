@@ -63,7 +63,7 @@ export default class MainPage extends React.Component {
       }
       return (
       <View style={styles.container}>
-        <Swiper showsButtons={true} dotColor='#212529' activeDotColor='#f6a21c' autoplayTimeout={4} prevButton={<Text style={styles.buttonText}>‹</Text>} nextButton={<Text style={styles.buttonText}>›</Text>}>
+        <Swiper showsButtons={true} dotColor='#212529' activeDotColor='#f6a21c' autoplay autoplayTimeout={4} prevButton={<Text style={styles.buttonText}>‹</Text>} nextButton={<Text style={styles.buttonText}>›</Text>}>
         {this.state.dataSourceAPI.map((item,key)=>{
                      return (<Slide 
                       film={item}

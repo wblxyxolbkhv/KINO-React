@@ -16,7 +16,7 @@ export default class Slide extends React.Component{
         const gotofilmpage = () => Actions.popAndPush('filmpage',{film:this.props.film,title:this.props.film.name});
             return(
             <TouchableOpacity style={styles.slide} onPress={gotofilmpage} activeOpacity={1}>
-                <ImageBackground style={styles.poster} source={{uri:'http://'+global.ip+'/images/Posters/'+this.props.film.poster}}>
+                <ImageBackground style={styles.poster} source={{uri:global.ip+'/images/Posters/'+this.props.film.poster}}>
                     <View style={styles.slidetext}>
                         <Text style={styles.text} adjustsFontSizeToFit>
                             {this.props.film.name}
